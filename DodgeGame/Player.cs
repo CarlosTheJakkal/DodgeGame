@@ -12,7 +12,6 @@ namespace DodgeGame
 
         public Player()
         {
-
             x = 150;
             y = 225;
             width = 25;
