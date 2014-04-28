@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace DodgeGame
 {
-    public class RainDrop
+    public class RainDrop : FallingObjects
     {
         public RainDrop(Random randomRainDrop)
         {
@@ -18,25 +18,20 @@ namespace DodgeGame
             
             pen = new Pen(Color.Aquamarine, 10);
             
-            rainRec = new Rectangle(x, y, width, height);
+            foRec = new Rectangle(x, y, width, height);
         }
 
-        public void falling(int timerCounter)
+        public override void falling(int timerCounter)
         {
             if (timerCounter % 4 == 0)
             {
-                rainRec.Y += 10;
+                foRec.Y += 10;
             }
         }
 
-        public void draw(Graphics g)
+        public override void draw(Graphics g)
         {
-            g.DrawPie(pen, rainRec, 60, 60);
+            g.DrawPie(pen, foRec, 60, 60);
         }
-
-        private Pen pen;
-        private int x, y, width, height;
-        public Rectangle rainRec;
-    
     }
 }

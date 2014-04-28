@@ -7,44 +7,14 @@ using System.Drawing;
 
 namespace DodgeGame
 {
-    public class Player
+    public abstract class Player : IPlayer
     {
-
-        public Player()
-        {
-            x = 150;
-            y = 225;
-            width = 25;
-            height = 125;
-
-            person = new Rectangle(x, y, width, height);
-            brush = new SolidBrush(Color.Chocolate);
-        }
-
-        public void drawPerson(Graphics g)
-        {
-            g.FillRectangle(brush, person);
-        }
-
-        public void drawPerson()
-        {
-           // person.X 
-        }
-
-        public void moveLeft()
-        {
-            drawPerson();
-            person.X -= 10;
-        }
-
-        public void moveRight()
-        {
-            drawPerson();
-            person.X += 10;
-        }
+        public abstract void drawPlayer(Graphics g);
+        public abstract void moveLeft();
+        public abstract void moveRight();
         
-        public Rectangle person;
-        private SolidBrush brush;
-        private int x, y, width, height;
+        public Rectangle player;
+        public SolidBrush brush;
+        public int x, y, width, height;
     }
 }

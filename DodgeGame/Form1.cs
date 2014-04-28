@@ -7,18 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Xml;
 
 namespace DodgeGame
 {
     public partial class Form1 : Form
     {
-        List<RainDrop> rainStorm = new List<RainDrop>();
-        Random randomRain = new Random();
+        GameControls game = new GameControls();
+        List<FallingObjects> storm = new List<FallingObjects>();
+        Random randomX = new Random();
         Graphics g;
-        Player player = new Player();
+        Player player = new Person();
         RainDrop rainDrop;
-        int runningScore;
-        int lives = 3;
         int timerCounter = 0;
         bool left;
         bool right;
@@ -26,15 +26,15 @@ namespace DodgeGame
         public Form1()
         {
             InitializeComponent();
-            rainDrop = new RainDrop(randomRain);
-            rainStorm.Add(rainDrop);
-            livesLabel.Text = Convert.ToString(lives);
+            rainDrop = new RainDrop(randomX);
+            storm.Add(rainDrop);
+            livesLabel.Text = Convert.ToString(game.lives);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            scoreLabel.Text = Convert.ToString(runningScore);
-
+            scoreLabel.Text = Convert.ToString(game.runningScore);
+            
             if (left)
             {
                     player.moveLeft();
@@ -49,14 +49,14 @@ namespace DodgeGame
 
             if (timerCounter % 40 == 0)
             {
-                rainDrop = new RainDrop(randomRain);
-                rainStorm.Add(rainDrop);
+                rainDrop = new RainDrop(randomX);
+                storm.Add(rainDrop);
             }
 
             //move raindrops down here
-            foreach(RainDrop r in rainStorm)
+            foreach(FallingObjects fo in storm)
             {
-                r.falling(timerCounter);
+                fo.falling(timerCounter);
             }
             
             //collision detection here
@@ -74,20 +74,28 @@ namespace DodgeGame
                 spaceBarLabel.Text = "";
                 left = false;
                 right = false;
+
+                if (game.lives == 0)
+                {
+                    game.resetScore();
+                    game.resetLives();
+                    livesLabel.Text = Convert.ToString(game.lives);
+                    storm.Clear();
+                }
             }
 
-            if (e.KeyData == Keys.Left && right == false)
+            if (e.KeyData == DodgeGame.Properties.Settings.Default.LeftKey && right == false)
             {
-                if (!(player.person.X < 10))
+                if (!(player.player.X < 10))
                 {
                     left = true;
                     right = false;
                 }
             }
 
-            if (e.KeyData == Keys.Right && left == false)
+            if (e.KeyData == DodgeGame.Properties.Settings.Default.RightKey && left == false)
             {
-                if (!(player.person.X > 300))
+                if (!(player.player.X > 300))
                 {
                     right = true;
                     left = false;
@@ -99,40 +107,40 @@ namespace DodgeGame
         {
             g = e.Graphics;
 
-            foreach (RainDrop r in rainStorm)
+            foreach (FallingObjects fo in storm)
             {
-                r.draw(g);
+                fo.draw(g);
             }
             
-            player.drawPerson(g);
+            player.drawPlayer(g);
         }
 
         public void collision()
         {
-            for(int i = 0; i < rainStorm.Count; i++)
+            for(int i = 0; i < storm.Count; i++)
             {
-                if (rainStorm[i].rainRec.Y > 290)
+                if (storm[i].foRec.Y > 290)
                 {
-                    rainStorm.Remove(rainStorm[i]);
-                    rainStorm.Add(new RainDrop(randomRain));
-                    runningScore += 10;
+                    storm.Remove(storm[i]);
+                    storm.Add(new RainDrop(randomX));
+                    game.runningScore += 10;
                 }
 
-                if (player.person.IntersectsWith(rainStorm[i].rainRec))
+                if (player.player.IntersectsWith(storm[i].foRec))
                 {
-                    rainStorm.Remove(rainStorm[i]);
-                    rainStorm.Add(new RainDrop(randomRain));
-                    lives--;
-                    livesLabel.Text = Convert.ToString(lives);
+                    storm.Remove(storm[i]);
+                    storm.Add(new RainDrop(randomX));
+                    game.lives--;
+                    livesLabel.Text = Convert.ToString(game.lives);
                     
-                    if (lives == 0)
+                    if (game.lives == 0)
                     {
                         timer1.Enabled = false;
-                        spaceBarLabel.Text = "GAME OVER! Your score was " + runningScore;
+                        spaceBarLabel.Text = "GAME OVER! Your score was " + game.runningScore;
                         
                     }
                 }
             }
-        }
+        }       
     }
 }
