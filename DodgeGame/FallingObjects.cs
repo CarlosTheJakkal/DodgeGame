@@ -7,6 +7,7 @@ using System.Drawing;
 
 namespace DodgeGame
 {
+    // Abstract FallingObjects class that implements the interface IFallingObjects
     public abstract class FallingObjects : IFallingObjects
     {
         public abstract void falling(int timerCounter);

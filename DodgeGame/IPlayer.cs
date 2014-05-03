@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DodgeGame
 {
+    // Interface for the Player class
     public interface IPlayer
     {
         void drawPlayer(Graphics g);

@@ -18,7 +18,7 @@ namespace DodgeGame
         Random randomX = new Random();
         Graphics g;
         Player player = new Person();
-        RainDrop rainDrop;
+        FallingObjects rainDrop;
         int timerCounter = 0;
         bool left;
         bool right;
@@ -26,40 +26,47 @@ namespace DodgeGame
         public Form1()
         {
             InitializeComponent();
+            // First rain drop can only be created here due to the random element.
             rainDrop = new RainDrop(randomX);
+            // We add the rain drop to the Fallin Objects List container
             storm.Add(rainDrop);
+            // This initializes the players lives to the form
             livesLabel.Text = Convert.ToString(game.lives);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            
             scoreLabel.Text = Convert.ToString(game.runningScore);
             
+            // Here we control the players left movement
             if (left)
             {
                     player.moveLeft();
                     left = false;
             }
 
+            // Here we control the players right movement
             if (right)
             {
                     player.moveRight();
                     right = false;
             }
 
+            // after each 40th tick of the timer, we create a new rain drop and add it to the list.
             if (timerCounter % 40 == 0)
             {
                 rainDrop = new RainDrop(randomX);
                 storm.Add(rainDrop);
             }
 
-            //move raindrops down here
+            // on each tick, we move the falling objects down here
             foreach(FallingObjects fo in storm)
             {
                 fo.falling(timerCounter);
             }
             
-            //collision detection here
+            //the collission function detects any collisions between objects, and then does some appropriate processing
             collision();
 
             timerCounter = timerCounter + 1;
@@ -68,6 +75,7 @@ namespace DodgeGame
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)   
         {
+            // we start the game by pressing the space bar key. Restartability is also controlled by the space bar key.
             if (e.KeyData == Keys.Space)
             {
                 timer1.Enabled = true;
@@ -84,6 +92,8 @@ namespace DodgeGame
                 }
             }
 
+            // This detects the key pressed and if it is the key for the left movement, it will move the player left.
+            // Not being able to go past the edge of the screen is also controlled here.
             if (e.KeyData == DodgeGame.Properties.Settings.Default.LeftKey && right == false)
             {
                 if (!(player.player.X < 10))
@@ -92,7 +102,9 @@ namespace DodgeGame
                     right = false;
                 }
             }
-
+            
+            // This detects the key pressed and if it is the key for the right movement, it will move the player right.
+            // Not being able to go past the edge of the screen is also controlled here.
             if (e.KeyData == DodgeGame.Properties.Settings.Default.RightKey && left == false)
             {
                 if (!(player.player.X > 300))
@@ -105,6 +117,7 @@ namespace DodgeGame
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
+            // This function paints the form.
             g = e.Graphics;
 
             foreach (FallingObjects fo in storm)
@@ -117,8 +130,12 @@ namespace DodgeGame
 
         public void collision()
         {
+            // For all of the falling objects in the list, we check for collision.
+            
             for(int i = 0; i < storm.Count; i++)
             {
+                // First with collision with the bottom of the screen. If the rain drop hits the bottom of the screen
+                // score is added, the rain drop is destroyed and a new random rain drop is created.
                 if (storm[i].foRec.Y > 290)
                 {
                     storm.Remove(storm[i]);
@@ -126,6 +143,9 @@ namespace DodgeGame
                     game.runningScore += 10;
                 }
 
+                // Then for collision with the player. If the rain drop hits the player, a life is removed. 
+                // If no more lives are left, then the game is over. When a drop hits the player, the drop is also destroyed 
+                // and a new rain drop is created in a random place.
                 if (player.player.IntersectsWith(storm[i].foRec))
                 {
                     storm.Remove(storm[i]);

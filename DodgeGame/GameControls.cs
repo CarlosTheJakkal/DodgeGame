@@ -7,7 +7,8 @@ using System.Windows.Forms;
 
 namespace DodgeGame
 {
-    class GameControls
+    // This class defines the controls for the game, inlcuding lives, score and the left and right keys.
+    public class GameControls
     {
         public GameControls()
         {

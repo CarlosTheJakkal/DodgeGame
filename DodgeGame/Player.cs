@@ -7,6 +7,7 @@ using System.Drawing;
 
 namespace DodgeGame
 {
+    // Abstract Player class that implements the interface IPlayer
     public abstract class Player : IPlayer
     {
         public abstract void drawPlayer(Graphics g);

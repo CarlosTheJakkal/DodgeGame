@@ -7,6 +7,7 @@ using System.Drawing;
 
 namespace DodgeGame
 {
+    // This is the RainDrop class, which inherits from the FallingObjects class. 
     public class RainDrop : FallingObjects
     {
         public RainDrop(Random randomRainDrop)

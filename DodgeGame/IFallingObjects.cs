@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace DodgeGame
 {
-    interface IFallingObjects
+    // Interface for the FallingObjects class
+    public interface IFallingObjects
     {
         void falling(int timerCounter);
         void draw(Graphics g);
