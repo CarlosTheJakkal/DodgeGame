@@ -27,8 +27,8 @@ namespace DodgeGame
             return;
         }
 
-        Keys goLeft = DodgeGame.Properties.Settings.Default.LeftKey;
-        Keys goRight = DodgeGame.Properties.Settings.Default.RightKey;
+        public Keys goLeft = DodgeGame.Properties.Settings.Default.LeftKey;
+        public Keys goRight = DodgeGame.Properties.Settings.Default.RightKey;
         public int lives = 3;
         public int runningScore;
     }

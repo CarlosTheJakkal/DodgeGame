@@ -94,7 +94,7 @@ namespace DodgeGame
 
             // This detects the key pressed and if it is the key for the left movement, it will move the player left.
             // Not being able to go past the edge of the screen is also controlled here.
-            if (e.KeyData == DodgeGame.Properties.Settings.Default.LeftKey && right == false)
+            if (e.KeyData == game.goLeft && right == false)
             {
                 if (!(player.player.X < 10))
                 {
@@ -105,7 +105,7 @@ namespace DodgeGame
             
             // This detects the key pressed and if it is the key for the right movement, it will move the player right.
             // Not being able to go past the edge of the screen is also controlled here.
-            if (e.KeyData == DodgeGame.Properties.Settings.Default.RightKey && left == false)
+            if (e.KeyData == game.goRight && left == false)
             {
                 if (!(player.player.X > 300))
                 {
